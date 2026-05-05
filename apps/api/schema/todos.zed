@@ -1,0 +1,25 @@
+// This is object definition for the todo app
+definition todos/user {}
+
+definition todos/list {
+// relation - Defines how objects relate to each other within the system, should be a noun.
+// Specifically establishes that a list can have an owner relationship with a user.
+ relation owner: todos/user
+  
+ // permissions - Define what actions can be performed on the object and who can perform them.
+ // In this case, the permissions are set such that only the owner of the list can view, edit, delete, or create todos within that list.
+ permission view = owner
+ permission edit = owner
+ permission delete = owner
+ permission create_todo = owner
+}
+
+definition todos/todo {
+    relation parent: todos/list
+
+    // arrow functions - Define how permissions are inherited or propagated through relationships.
+    // In this case, the permissions for viewing, editing, and deleting a todo are inherited from the parent list.
+    permission view = parent -> view
+    permission edit = parent -> edit
+    permission delete = parent -> delete
+}
