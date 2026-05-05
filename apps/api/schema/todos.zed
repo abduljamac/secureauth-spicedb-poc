@@ -1,5 +1,9 @@
 // This is object definition for the todo app
-definition todos/user {}
+// prefix is used to prevent naming conflicts and to organize the schema into logical groups, so you can have multiple user objects in the same system without conflicts.
+definition todos/user {
+    // This is a simple user definition, it can be expanded with more attributes as needed.
+    // For example, you could add an email or username attribute here if needed for your application.
+}
 
 definition todos/list {
 // relation - Defines how objects relate to each other within the system, should be a noun.

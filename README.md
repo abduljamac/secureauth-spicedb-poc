@@ -2,23 +2,38 @@
 
 small todo app that uses SecureAuth for login/identity and SpiceDB for relationship-based authorisation
 
-Barebones pnpm + Turborepo workspace.
+## SpiceDB Commands
+Start a SpiceDB server in memory with gRPC on port 50051:
 
-## Structure
+```bash
+docker run --rm -p 50051:50051 authzed/spicedb serve --grpc-preshared-key "devsecret" --datastore-engine memory
+```
 
-- `apps/api/` — minimal Express API
-- `apps/web/` — minimal Next.js web app
-- `packages/` — add shared packages here when you need them
+Common `zed` CLI operations:
 
-## Getting started
+```bash
+# Write schema
+zed schema write schema/todos.zed
 
-1. Run `pnpm install`
-2. Add apps or packages
-3. Run `pnpm dev`
+# Create Alice as owner of a list:
+# Zed relationship create todos/todo:todo_1 parent todos/list:list_1
+zed relationship create todos/list:list_1 owner todos/user:alice
+zed relationship create todos/todo:todo_1 parent todos/list:list_1 
 
+# View current schema
+zed schema read
+# View objects and relations
+zed relationship read todos/todo 
 
-# SpiceDB comands 
-- `docker run --rm -p 50051:50051 authzed/spicedb serve --grpc-preshared-key "devsecret" --datastore-engine memory` - starts a SpiceDB server in memory with gRPC on port 50051 for learning
-- `zed schema write schema/todos.zed` - zed schema write writes a .zed schema file to the current permissions system.
-- `zed schema read` - to view the scheme you created 
-- `zed permission check todos/list:list_1 view todos/user:alice --explain` - check permissions set in schema
+# Check permissions
+zed permission check todos/list:list_1 view todos/user:alice --explain 
+```
+
+**Relationship Syntax:**
+```bash
+# A `todos/list` object can have an `owner` relationship to a `todos/user` object.
+zed relationship create todos/list:list_1 owner todos/user:alice
+
+# This will check if user alice can edit todo_1
+zed permission check todos/todo:todo_1 edit todos/user:alice --explain
+```
