@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { DevUserSwitcher } from "./components/dev-user-switcher";
 import { ListDetail } from "./components/list-detail";
 import { ListSidebar } from "./components/list-sidebar";
-import { ManageCollaboratorsDialog } from "./components/manage-collaborators-dialog";
 import { Toasts } from "./components/toasts";
 import {
 	initialLists,
+	KNOWN_USERS,
 	listCanFlags,
 	type MockListRecord,
 	todosFor,
@@ -25,8 +25,6 @@ export default function Page() {
 	const [selectedListId, setSelectedListId] = useState<string | null>(
 		initialLists[0]?.id ?? null,
 	);
-	const [manageOpen, setManageOpen] = useState(false);
-
 	const visibleLists = useMemo(
 		() => visibleListsFor(lists, currentUserId),
 		[lists, currentUserId],
@@ -262,13 +260,17 @@ export default function Page() {
 					{selectedListView && selectedRecord ? (
 						<ListDetail
 							list={selectedListView}
+							ownerId={selectedRecord.ownerId}
 							todos={visibleTodos}
 							collaborators={selectedRecord.collaborators}
+							knownUsers={KNOWN_USERS}
 							onCreateTodo={handleCreateTodo}
 							onToggleTodo={handleToggleTodo}
 							onUpdateTodoText={handleUpdateTodoText}
 							onDeleteTodo={handleDeleteTodo}
-							onOpenManageCollaborators={() => setManageOpen(true)}
+							onAddCollaborator={handleAddCollaborator}
+							onRemoveCollaborator={handleRemoveCollaborator}
+							onUpdateCollaboratorRole={handleUpdateCollaboratorRole}
 						/>
 					) : (
 						<p className="text-slate-500 italic">
@@ -277,17 +279,6 @@ export default function Page() {
 					)}
 				</div>
 			</main>
-			{selectedListView && selectedRecord ? (
-				<ManageCollaboratorsDialog
-					open={manageOpen}
-					listName={selectedListView.name}
-					collaborators={selectedRecord.collaborators}
-					onClose={() => setManageOpen(false)}
-					onAdd={handleAddCollaborator}
-					onRemove={handleRemoveCollaborator}
-					onUpdateRole={handleUpdateCollaboratorRole}
-				/>
-			) : null}
 			<Toasts />
 		</div>
 	);

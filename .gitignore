@@ -2,13 +2,19 @@
 node_modules
 .pnp
 .pnp.js
+jspm_packages
+web_modules
+bower_components
 
 # Build outputs
 dist
 build
+build/Release
 .next/
 out/
+.nuxt
 .turbo
+.svelte-kit
 
 # TypeScript
 *.tsbuildinfo
@@ -23,11 +29,53 @@ next-env.d.ts
 .vercel
 
 # Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
 .pnpm-debug.log*
+
+# Runtime / process
+pids
+*.pid
+*.seed
+*.pid.lock
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Testing / coverage
+coverage
+*.lcov
+.nyc_output
+
+# Cache
+.cache
+.parcel-cache
+.npm
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+.webpack/
+.fusebox/
+.serverless/
+
+# Yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.yarn-integrity
 
 # Misc
 .DS_Store
 *.pem
+*.tgz
+.node_repl_history
+.lock-wscript
+.tern-port
+.vscode-test
+lib-cov

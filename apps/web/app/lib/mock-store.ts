@@ -1,5 +1,11 @@
 import type { CanFlags, Collaborator, Todo, TodoList } from "./types";
 
+export const KNOWN_USERS: { id: string; email: string }[] = [
+	{ id: "alice", email: "alice@example.com" },
+	{ id: "bob", email: "bob@example.com" },
+	{ id: "charlie", email: "charlie@example.com" },
+];
+
 export type MockListRecord = {
 	id: string;
 	name: string;

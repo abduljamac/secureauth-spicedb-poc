@@ -1,30 +1,38 @@
 "use client";
 
-import type { Collaborator, Todo, TodoList } from "../lib/types";
+import type { Collaborator, CollaboratorRole, Todo, TodoList } from "../lib/types";
 import { CollaboratorsPanel } from "./collaborators-panel";
 import { CreateTodoForm } from "./create-todo-form";
 import { TodoItem } from "./todo-item";
 
 type ListDetailProps = {
 	list: TodoList;
+	ownerId: string;
 	todos: Todo[];
 	collaborators: Collaborator[];
+	knownUsers: { id: string; email: string }[];
 	onCreateTodo: (text: string) => void;
 	onToggleTodo: (todo: Todo, completed: boolean) => void;
 	onUpdateTodoText: (todo: Todo, text: string) => void;
 	onDeleteTodo: (todo: Todo) => void;
-	onOpenManageCollaborators: () => void;
+	onAddCollaborator: (identifier: string, role: CollaboratorRole) => void;
+	onRemoveCollaborator: (collaborator: Collaborator) => void;
+	onUpdateCollaboratorRole: (collaborator: Collaborator, role: CollaboratorRole) => void;
 };
 
 export function ListDetail({
 	list,
+	ownerId,
 	todos,
 	collaborators,
+	knownUsers,
 	onCreateTodo,
 	onToggleTodo,
 	onUpdateTodoText,
 	onDeleteTodo,
-	onOpenManageCollaborators,
+	onAddCollaborator,
+	onRemoveCollaborator,
+	onUpdateCollaboratorRole,
 }: ListDetailProps) {
 	const canAddTodo = list.can?.addTodo !== false && list.can?.edit !== false;
 	const remaining = todos.filter((t) => !t.completed).length;
@@ -83,8 +91,12 @@ export function ListDetail({
 
 			<CollaboratorsPanel
 				list={list}
+				ownerId={ownerId}
 				collaborators={collaborators}
-				onOpenManage={onOpenManageCollaborators}
+				knownUsers={knownUsers}
+				onAdd={onAddCollaborator}
+				onRemove={onRemoveCollaborator}
+				onUpdateRole={onUpdateCollaboratorRole}
 			/>
 		</section>
 	);
